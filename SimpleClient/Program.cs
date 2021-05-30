@@ -23,8 +23,10 @@ namespace SimpleClient
                 Console.WriteLine("Enter a message:");
                 // Create a string variable and get user input from the keyboard and store it in the variable
                 string message = Console.ReadLine();
-                // get 
-                myClient.send("127.0.0.1", message);
+                // get the byte array of the screen capture
+                Byte[] singleImage = myClient.captureScreen();
+                // sending byte array to tcp client
+                myClient.send("127.0.0.1", singleImage);
             }
         }
 
@@ -34,23 +36,15 @@ namespace SimpleClient
          * will be sent to the server to display
          */
         public Byte[] captureScreen() {
+            PrintScreen ps = new PrintScreen();
+
             try {
-                Rectangle bounds = Screen.GetBounds(Point.Empty);
-                using(Bitmap myBitmap = new Bitmap(bounds.Width, bounds.Height)) {
-                    using(Graphics g = Graphics.FromImage(myBitmap)) {
-                        g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
-                    }
-
-                    using(MemoryStream ms = new MemoryStream()) {
-                        myBitmap.Save(ms, ImageFormat.Png);
-                        return ms.ToArray();
-                    }
-                }
-
+                ps.captureScreen();
             } catch (Exception e) {
-                Console.WriteLine("Failed to take screenshot");
-                Console.WriteLine(e.Message);
+
             }
+
+            Console.WriteLine("Failed to take image!\nSending nothing");
             return new Byte[0];
         }
 
@@ -58,15 +52,15 @@ namespace SimpleClient
          * This method sends data from the client to the
          * server. Sends the data in a byte array.
          */
-        public void send(String server, String message) {
+        public void send(String server, Byte[] image) {
             try {
                 client = new TcpClient(server, port);
                 // Translate the passed message into ASCII and store it as a Byte array.
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+                // Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
 
                 NetworkStream stream = client.GetStream();
                 // Send the message to the connected TcpServer.
-                stream.Write(data, 0, data.Length);
+                stream.Write(image, 0, image.Length);
 
                 Console.WriteLine("Sent Screenshot!");
                 // Close everything.
@@ -79,3 +73,6 @@ namespace SimpleClient
         }
     }
 }
+
+
+
