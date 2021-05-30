@@ -18,9 +18,9 @@ All code is written in C#, the code will eventually be added with some sort of i
 
 4. Add the below to the [your project name].csproj file
   a. This is allowing you to use the System.Drawing packages
-  <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-  </ItemGroup>
+  \<ItemGroup\>
+    \<PackageReference Include="System.Drawing.Common" Version="4.7.0" /\>
+  \</ItemGroup\>
 
 5. run code with command: $> dotnet run
 
