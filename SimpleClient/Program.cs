@@ -35,13 +35,18 @@ namespace SimpleClient
          */
         public Byte[] captureScreen() {
             try {
-                //Creating a new Bitmap object
-                Bitmap captureBitmap = new Bitmap(1024, 768, PixelFormat.Format32bppArgb);
-                Rectangle captureRectangle = Screen.AllScreens[0].Bounds;
-                Graphics captureGraphics = Graphics.FromImage(captureBitmap);
-                //Copying Image from The Screen
-                captureGraphics.CopyFromScreen(captureRectangle.Left,captureRectangle.Top,0,0,captureRectangle.Size);
-                return captureBitmap.ToByteArray(ImageFormat.Bmp);
+                Rectangle bounds = Screen.GetBounds(Point.Empty);
+                using(Bitmap myBitmap = new Bitmap(bounds.Width, bounds.Height)) {
+                    using(Graphics g = Graphics.FromImage(myBitmap)) {
+                        g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                    }
+
+                    using(MemoryStream ms = new MemoryStream()) {
+                        myBitmap.Save(ms, ImageFormat.Png);
+                        return ms.ToArray();
+                    }
+                }
+
             } catch (Exception e) {
                 Console.WriteLine("Failed to take screenshot");
                 Console.WriteLine(e.Message);
