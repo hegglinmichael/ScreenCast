@@ -15,7 +15,14 @@ All code is written in C#, the code will eventually be added with some sort of i
   d. type $> dotnet new console
 
 3. insert my code into the Program.cs file
-4. run code with command: $> dotnet run
+
+4. Add the below to the [your project name].csproj file
+  a. This is allowing you to use the System.Drawing packages
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+  </ItemGroup>
+
+5. run code with command: $> dotnet run
 
 NOTE: you must run the server before the client
   
