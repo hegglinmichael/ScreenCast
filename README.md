@@ -3,7 +3,7 @@ A simple screencast application.  Has multiple branches, each branch a small ste
 
 All code is written in C#, the code will eventually be added with some sort of interface
 
-## These programs where developed on Macos, the setup is below
+## These programs were developed on Macos, the setup is below
 1. install visual studio code, visual studio code C# extension, and .net stable build
   a. https://dotnet.microsoft.com/download
   b. https://code.visualstudio.com/download
